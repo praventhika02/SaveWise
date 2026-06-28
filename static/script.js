@@ -6,7 +6,9 @@ const monthsValue = document.querySelector("#months-value");
 const totalExpensesCard = document.querySelector("#totalExpenses");
 const remainingMoneyCard = document.querySelector("#remainingMoney");
 const monthlySavingsNeededCard = document.querySelector("#monthlySavingsNeeded");
+const savingsRateCard = document.querySelector("#savingsRate");
 const goalStatusCard = document.querySelector("#goalStatus");
+const recommendationTextCard = document.querySelector("#recommendationText");
 
 function getNumber(id) {
     // Number("") becomes 0, so empty fields are safe for beginners to leave blank.
@@ -18,6 +20,10 @@ function formatMoney(amount) {
         style: "currency",
         currency: "USD"
     });
+}
+
+function formatPercent(amount) {
+    return `${amount.toFixed(1)}%`;
 }
 
 function updateMonthsLabel() {
@@ -53,9 +59,13 @@ function calculatePlan() {
     // Divide the goal price by the number of months to find the monthly target.
     const monthlySavingsNeeded = goalPrice / goalMonths;
 
+    // Savings rate shows what percentage of monthly income is still available.
+    const savingsRate = income > 0 ? (availableToSave / income) * 100 : 0;
+
     totalExpensesCard.textContent = formatMoney(totalExpenses);
     remainingMoneyCard.textContent = formatMoney(availableToSave);
     monthlySavingsNeededCard.textContent = formatMoney(monthlySavingsNeeded);
+    savingsRateCard.textContent = formatPercent(savingsRate);
 
     if (goalPrice === 0) {
         goalStatusCard.textContent = "Enter a goal to begin planning.";
@@ -64,6 +74,30 @@ function calculatePlan() {
     } else {
         goalStatusCard.textContent = "Not achievable yet — reduce spending or increase the timeline.";
     }
+
+    const recommendations = [];
+
+    if (goalPrice === 0) {
+        recommendations.push("Set a goal to receive a personalised savings plan.");
+    } else if (availableToSave >= monthlySavingsNeeded) {
+        recommendations.push("You are on track. Try saving this amount consistently each month and avoid unnecessary spending.");
+    } else {
+        // Shortfall is the extra amount needed each month to meet the goal on time.
+        const shortfall = monthlySavingsNeeded - availableToSave;
+
+        recommendations.push(`You need an extra ${formatMoney(shortfall)} per month. Consider reducing food, entertainment or shopping expenses, or increasing your timeline.`);
+    }
+
+    // Wants spending combines entertainment and shopping, then compares it to income.
+    if (income > 0 && entertainment + shopping > income * 0.3) {
+        recommendations.push("Your wants spending is quite high. Cutting small lifestyle expenses can help you reach your goal faster.");
+    }
+
+    if (income > 0 && savingsRate < 20) {
+        recommendations.push("Your savings rate is below 20%. A stronger savings habit will improve your financial stability.");
+    }
+
+    recommendationTextCard.textContent = recommendations.join(" ");
 }
 
 formInputs.forEach((input) => {

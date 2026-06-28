@@ -156,7 +156,7 @@ input[type="range"] {
 
 .results-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
     gap: 16px;
     margin-top: 22px;
 }
@@ -177,16 +177,25 @@ input[type="range"] {
     line-height: 1.25;
 }
 
-#goalStatus {
+#goalStatus,
+#recommendationText {
     display: block;
     color: #16835f;
     font-size: 1rem;
+}
+
+.recommendation-card {
+    grid-column: span 2;
 }
 
 @media (max-width: 820px) {
     .dashboard-grid,
     .results-grid {
         grid-template-columns: 1fr;
+    }
+
+    .recommendation-card {
+        grid-column: auto;
     }
 
     .topbar {
