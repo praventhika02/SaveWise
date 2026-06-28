@@ -9,6 +9,13 @@ const monthlySavingsNeededCard = document.querySelector("#monthlySavingsNeeded")
 const savingsRateCard = document.querySelector("#savingsRate");
 const goalStatusCard = document.querySelector("#goalStatus");
 const recommendationTextCard = document.querySelector("#recommendationText");
+const needsPercentCard = document.querySelector("#needsPercent");
+const wantsPercentCard = document.querySelector("#wantsPercent");
+const savingsPercentCard = document.querySelector("#savingsPercent");
+const budgetRuleStatusCard = document.querySelector("#budgetRuleStatus");
+const needsBar = document.querySelector("#needsBar");
+const wantsBar = document.querySelector("#wantsBar");
+const savingsBar = document.querySelector("#savingsBar");
 
 function getNumber(id) {
     // Number("") becomes 0, so empty fields are safe for beginners to leave blank.
@@ -24,6 +31,13 @@ function formatMoney(amount) {
 
 function formatPercent(amount) {
     return `${amount.toFixed(1)}%`;
+}
+
+function setProgressBar(bar, percent) {
+    // Keep the progress bar between 0% and 100% so the layout stays tidy.
+    const safePercent = Math.min(Math.max(percent, 0), 100);
+
+    bar.style.width = `${safePercent}%`;
 }
 
 function updateMonthsLabel() {
@@ -62,10 +76,23 @@ function calculatePlan() {
     // Savings rate shows what percentage of monthly income is still available.
     const savingsRate = income > 0 ? (availableToSave / income) * 100 : 0;
 
+    // 50/30/20 budgeting groups: needs, wants, and savings.
+    const needs = transport + food;
+    const wants = entertainment + shopping + others;
+    const needsPercent = income > 0 ? (needs / income) * 100 : 0;
+    const wantsPercent = income > 0 ? (wants / income) * 100 : 0;
+    const savingsPercent = income > 0 ? (availableToSave / income) * 100 : 0;
+
     totalExpensesCard.textContent = formatMoney(totalExpenses);
     remainingMoneyCard.textContent = formatMoney(availableToSave);
     monthlySavingsNeededCard.textContent = formatMoney(monthlySavingsNeeded);
     savingsRateCard.textContent = formatPercent(savingsRate);
+    needsPercentCard.textContent = formatPercent(needsPercent);
+    wantsPercentCard.textContent = formatPercent(wantsPercent);
+    savingsPercentCard.textContent = formatPercent(savingsPercent);
+    setProgressBar(needsBar, needsPercent);
+    setProgressBar(wantsBar, wantsPercent);
+    setProgressBar(savingsBar, savingsPercent);
 
     if (goalPrice === 0) {
         goalStatusCard.textContent = "Enter a goal to begin planning.";
@@ -98,6 +125,18 @@ function calculatePlan() {
     }
 
     recommendationTextCard.textContent = recommendations.join(" ");
+
+    if (income === 0) {
+        budgetRuleStatusCard.textContent = "Enter monthly income to analyse your budget.";
+    } else if (needsPercent <= 50 && wantsPercent <= 30 && savingsPercent >= 20) {
+        budgetRuleStatusCard.textContent = "Healthy budget balance.";
+    } else if (savingsPercent < 20) {
+        budgetRuleStatusCard.textContent = "Savings are below the recommended 20%. Try reducing wants spending.";
+    } else if (needsPercent > 50) {
+        budgetRuleStatusCard.textContent = "Needs spending is high. Review essential expenses such as transport and food.";
+    } else if (wantsPercent > 30) {
+        budgetRuleStatusCard.textContent = "Wants spending is above the recommended 30%. Reduce lifestyle expenses to save faster.";
+    }
 }
 
 formInputs.forEach((input) => {
