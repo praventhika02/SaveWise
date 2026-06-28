@@ -1,148 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SaveWise</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SaveWise</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <main class="app-shell">
-        <header class="hero">
-            <nav class="topbar">
-                <div class="brand-mark">S</div>
-                <span class="brand-name">SaveWise</span>
-            </nav>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">S</div>
+      <div>
+        <h1>SaveWise</h1>
+        <p>Student Money Planner</p>
+      </div>
+    </div>
 
-            <section class="hero-content">
-                <p class="eyebrow">Personal finance dashboard</p>
-                <h1>SaveWise</h1>
-                <p class="tagline">Plan your spending today. Achieve your goals tomorrow.</p>
-            </section>
-        </header>
+    <nav>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#budget">Budget</a>
+      <a href="#goals">Goals</a>
+      <a href="#insights">Insights</a>
+      <a href="#coach">Coach</a>
+    </nav>
 
-        <section class="dashboard-grid">
-            <section class="card input-card">
-                <div class="section-heading">
-                    <p class="eyebrow">Money in and out</p>
-                    <h2>Monthly Budget</h2>
-                </div>
+    <div class="side-note">
+      <strong>Tip</strong>
+      <p>Plan small. Save smart. Reach your goals faster.</p>
+    </div>
+  </aside>
 
-                <form class="finance-form">
-                    <label for="balance">Current balance</label>
-                    <input type="number" id="balance" name="balance" min="0" placeholder="0.00">
+  <main class="main">
+    <section id="dashboard" class="hero">
+      <div>
+        <p class="eyebrow">Student fintech dashboard</p>
+        <h2>Good morning 👋</h2>
+        <p>Track allowance, part-time income, daily expenses and savings goals in one clean dashboard.</p>
+      </div>
 
-                    <label for="income">Monthly income</label>
-                    <input type="number" id="income" name="income" min="0" placeholder="0.00">
+      <button id="clearDataBtn" class="outline-btn">Clear saved data</button>
+    </section>
 
-                    <label for="transport">Transport expense</label>
-                    <input type="number" id="transport" name="transport" min="0" placeholder="0.00">
+    <section class="health-card">
+      <div>
+        <p class="eyebrow">Money health</p>
+        <h2>Student Financial Health Score</h2>
+        <p id="healthSummary">Enter your income, expenses and goals to view your money health.</p>
+      </div>
+      <div class="score-box">
+        <strong id="healthScore">0 / 100</strong>
+        <span id="healthGrade">Needs Improvement</span>
+      </div>
+    </section>
 
-                    <label for="food">Food expense</label>
-                    <input type="number" id="food" name="food" min="0" placeholder="0.00">
+    <section class="quick-grid">
+      <article class="mini-card">
+        <p>Income</p>
+        <h3 id="incomeDisplay">$0.00</h3>
+      </article>
+      <article class="mini-card">
+        <p>Expenses</p>
+        <h3 id="totalExpenses">$0.00</h3>
+      </article>
+      <article class="mini-card">
+        <p>Remaining</p>
+        <h3 id="remainingMoney">$0.00</h3>
+      </article>
+      <article class="mini-card">
+        <p>Savings Rate</p>
+        <h3 id="savingsRate">0.0%</h3>
+      </article>
+    </section>
 
-                    <label for="entertainment">Entertainment expense</label>
-                    <input type="number" id="entertainment" name="entertainment" min="0" placeholder="0.00">
+    <section id="budget" class="section-grid">
+      <div class="section-title">
+        <p class="eyebrow">Step 1</p>
+        <h2>Budget Planner</h2>
+        <p>Enter what you usually receive and spend each month.</p>
+      </div>
 
-                    <label for="shopping">Shopping expense</label>
-                    <input type="number" id="shopping" name="shopping" min="0" placeholder="0.00">
+      <div class="two-col">
+        <article class="card">
+          <h3>Your Money Details</h3>
 
-                    <label for="others">Other expenses</label>
-                    <input type="number" id="others" name="others" min="0" placeholder="0.00">
-                </form>
-            </section>
+          <div class="form-grid">
+            <label>Current Balance<input type="number" id="balance" min="0" placeholder="500"></label>
+            <label>Monthly Allowance / Income<input type="number" id="income" min="0" placeholder="300"></label>
+            <label>Transport<input type="number" id="transport" min="0" placeholder="60"></label>
+            <label>Food<input type="number" id="food" min="0" placeholder="180"></label>
+            <label>Entertainment<input type="number" id="entertainment" min="0" placeholder="50"></label>
+            <label>Shopping<input type="number" id="shopping" min="0" placeholder="40"></label>
+            <label>Others<input type="number" id="others" min="0" placeholder="30"></label>
+          </div>
+        </article>
 
-            <section class="card goal-card">
-                <div class="section-heading">
-                    <p class="eyebrow">Future target</p>
-                    <h2>Savings Goal</h2>
-                </div>
+        <div class="stack">
+          <article class="card">
+            <h3>50/30/20 Budget Check</h3>
 
-                <form class="goal-form">
-                    <label for="goalName">Goal name</label>
-                    <input type="text" id="goalName" name="goalName" placeholder="New laptop">
+            <div class="bar-row">
+              <span>Needs</span><strong id="needsPercent">0.0%</strong>
+              <div class="bar"><div id="needsBar"></div></div>
+            </div>
 
-                    <label for="goalPrice">Goal price</label>
-                    <input type="number" id="goalPrice" name="goalPrice" min="0" placeholder="0.00">
+            <div class="bar-row">
+              <span>Wants</span><strong id="wantsPercent">0.0%</strong>
+              <div class="bar"><div id="wantsBar"></div></div>
+            </div>
 
-                    <div class="slider-row">
-                        <label for="goalMonths">Months to achieve goal</label>
-                        <span id="months-value">6 months</span>
-                    </div>
-                    <input type="range" id="goalMonths" name="goalMonths" min="1" max="12" value="6">
-                </form>
-            </section>
-        </section>
+            <div class="bar-row">
+              <span>Savings</span><strong id="savingsPercent">0.0%</strong>
+              <div class="bar"><div id="savingsBar"></div></div>
+            </div>
 
-        <section class="results-grid" aria-label="Budget results">
-            <article class="result-card">
-                <p>Total monthly expenses</p>
-                <strong id="totalExpenses">$0.00</strong>
+            <p id="budgetRuleStatus" class="message">Enter monthly income to analyse your budget.</p>
+          </article>
+
+          <article class="card">
+            <h3>Student Safety Buffer</h3>
+            <p class="small">For extra transport, printing, school supplies or sudden project costs.</p>
+            <p id="safetyBufferMonths" class="message">Your current balance can cover 0.0 months of your usual student expenses.</p>
+            <div class="bar"><div id="safetyBufferBar"></div></div>
+            <p id="safetyBufferStatus" class="message">Enter your usual monthly expenses to check your safety buffer.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="goals" class="section-grid">
+      <div class="section-title">
+        <p class="eyebrow">Step 2</p>
+        <h2>Savings Goals</h2>
+        <p>Add what you want to buy and SaveWise will plan how to reach it.</p>
+      </div>
+
+      <div class="two-col">
+        <article class="card">
+          <h3>Add a Goal</h3>
+
+          <form class="goal-form">
+            <label>Goal Name<input type="text" id="goalName" placeholder="Laptop"></label>
+            <label>Goal Price<input type="number" id="goalPrice" min="0" placeholder="1200"></label>
+            <label>Target Months<input type="number" id="goalMonths" min="1" max="60" placeholder="6"></label>
+            <button type="submit" id="addGoalButton">Add Goal</button>
+          </form>
+
+          <h3 class="subhead">Saved Goals</h3>
+          <div id="goalsList" class="list-box">No goals added yet.</div>
+        </article>
+
+        <div class="stack">
+          <section class="quick-grid two">
+            <article class="mini-card">
+              <p>Monthly Needed</p>
+              <h3 id="monthlySavingsNeeded">$0.00</h3>
             </article>
-
-            <article class="result-card">
-                <p>Remaining money</p>
-                <strong id="remainingMoney">$0.00</strong>
+            <article class="mini-card">
+              <p>Status</p>
+              <h3 id="goalStatus" class="status-pill">Enter a goal</h3>
             </article>
+          </section>
 
-            <article class="result-card">
-                <p>Monthly savings needed</p>
-                <strong id="monthlySavingsNeeded">$0.00</strong>
-            </article>
+          <article class="card">
+            <h3>Goal Priority</h3>
+            <div id="priorityList" class="list-box">Add goals to see your priority ranking.</div>
+            <p id="priorityRecommendation" class="message">Your first goal recommendation will appear here.</p>
+          </article>
 
-            <article class="result-card">
-                <p>Savings rate</p>
-                <strong id="savingsRate">0.0%</strong>
-            </article>
+          <article class="card">
+            <h3>Goal Timeline</h3>
+            <div id="timelineContainer" class="timeline-box">Add a goal to view your savings timeline.</div>
+          </article>
 
-            <article class="result-card">
-                <p>Goal status</p>
-                <strong id="goalStatus">Enter a goal to begin planning.</strong>
-            </article>
+          <article class="card">
+            <h3>Spending Optimiser</h3>
+            <div id="optimiserText" class="list-box">Add a goal to see suggested spending cuts.</div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-            <article class="result-card recommendation-card">
-                <p>Smart Recommendation</p>
-                <strong id="recommendationText">Set a goal to receive a personalised savings plan.</strong>
-            </article>
+    <section id="insights" class="section-grid">
+      <div class="section-title">
+        <p class="eyebrow">Step 3</p>
+        <h2>Financial Insights</h2>
+        <p>Visualise your spending and savings progress.</p>
+      </div>
 
-            <article class="result-card budget-rule-card">
-                <p>50/30/20 Budget Check</p>
+      <div class="charts-grid">
+        <div class="chart-card"><h3>Expense Breakdown</h3><span id="expenseChartPlaceholder"></span><canvas id="expenseChart"></canvas></div>
+        <div class="chart-card"><h3>Income vs Expenses</h3><span id="incomeChartPlaceholder"></span><canvas id="incomeChart"></canvas></div>
+        <div class="chart-card"><h3>Goal Projection</h3><span id="goalChartPlaceholder"></span><canvas id="goalChart"></canvas></div>
+        <div class="chart-card"><h3>Spending Distribution</h3><span id="distributionChartPlaceholder"></span><canvas id="distributionChart"></canvas></div>
+      </div>
+    </section>
 
-                <div class="budget-row">
-                    <div class="budget-label">
-                        <span>Needs</span>
-                        <strong id="needsPercent">0.0%</strong>
-                    </div>
-                    <div class="progress-track">
-                        <div class="progress-fill needs-fill" id="needsBar"></div>
-                    </div>
-                </div>
+    <section id="coach" class="section-grid">
+      <div class="section-title">
+        <p class="eyebrow">Step 4</p>
+        <h2>Student Finance Coach</h2>
+        <p>Get simple advice based on your actual student budget.</p>
+      </div>
 
-                <div class="budget-row">
-                    <div class="budget-label">
-                        <span>Wants</span>
-                        <strong id="wantsPercent">0.0%</strong>
-                    </div>
-                    <div class="progress-track">
-                        <div class="progress-fill wants-fill" id="wantsBar"></div>
-                    </div>
-                </div>
+      <div class="two-col">
+        <article class="card coach-card">
+          <h3>Coach Message</h3>
+          <p id="coachMessage">Add a savings goal to receive a personalised student finance plan.</p>
+        </article>
 
-                <div class="budget-row">
-                    <div class="budget-label">
-                        <span>Savings</span>
-                        <strong id="savingsPercent">0.0%</strong>
-                    </div>
-                    <div class="progress-track">
-                        <div class="progress-fill savings-fill" id="savingsBar"></div>
-                    </div>
-                </div>
+        <article class="card">
+          <h3>Smart Recommendation</h3>
+          <p id="recommendationText" class="message">Set a goal to receive a personalised savings plan.</p>
+        </article>
+      </div>
+    </section>
+  </main>
 
-                <strong id="budgetRuleStatus">Enter monthly income to analyse your budget.</strong>
-            </article>
-        </section>
-    </main>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
