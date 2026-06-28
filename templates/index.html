@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaveWise</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="app-shell">
+        <header class="hero">
+            <nav class="topbar">
+                <div class="brand-mark">S</div>
+                <span class="brand-name">SaveWise</span>
+            </nav>
+
+            <section class="hero-content">
+                <p class="eyebrow">Personal finance dashboard</p>
+                <h1>SaveWise</h1>
+                <p class="tagline">Plan your spending today. Achieve your goals tomorrow.</p>
+            </section>
+        </header>
+
+        <section class="dashboard-grid">
+            <section class="card input-card">
+                <div class="section-heading">
+                    <p class="eyebrow">Money in and out</p>
+                    <h2>Monthly Budget</h2>
+                </div>
+
+                <form class="finance-form">
+                    <label for="balance">Current balance</label>
+                    <input type="number" id="balance" name="balance" min="0" placeholder="0.00">
+
+                    <label for="income">Monthly income</label>
+                    <input type="number" id="income" name="income" min="0" placeholder="0.00">
+
+                    <label for="transport">Transport expense</label>
+                    <input type="number" id="transport" name="transport" min="0" placeholder="0.00">
+
+                    <label for="food">Food expense</label>
+                    <input type="number" id="food" name="food" min="0" placeholder="0.00">
+
+                    <label for="entertainment">Entertainment expense</label>
+                    <input type="number" id="entertainment" name="entertainment" min="0" placeholder="0.00">
+
+                    <label for="shopping">Shopping expense</label>
+                    <input type="number" id="shopping" name="shopping" min="0" placeholder="0.00">
+
+                    <label for="others">Other expenses</label>
+                    <input type="number" id="others" name="others" min="0" placeholder="0.00">
+                </form>
+            </section>
+
+            <section class="card goal-card">
+                <div class="section-heading">
+                    <p class="eyebrow">Future target</p>
+                    <h2>Savings Goal</h2>
+                </div>
+
+                <form class="goal-form">
+                    <label for="goalName">Goal name</label>
+                    <input type="text" id="goalName" name="goalName" placeholder="New laptop">
+
+                    <label for="goalPrice">Goal price</label>
+                    <input type="number" id="goalPrice" name="goalPrice" min="0" placeholder="0.00">
+
+                    <div class="slider-row">
+                        <label for="goalMonths">Months to achieve goal</label>
+                        <span id="months-value">6 months</span>
+                    </div>
+                    <input type="range" id="goalMonths" name="goalMonths" min="1" max="12" value="6">
+                </form>
+            </section>
+        </section>
+
+        <section class="results-grid" aria-label="Budget results">
+            <article class="result-card">
+                <p>Total monthly expenses</p>
+                <strong id="totalExpenses">$0.00</strong>
+            </article>
+
+            <article class="result-card">
+                <p>Remaining money</p>
+                <strong id="remainingMoney">$0.00</strong>
+            </article>
+
+            <article class="result-card">
+                <p>Monthly savings needed</p>
+                <strong id="monthlySavingsNeeded">$0.00</strong>
+            </article>
+
+            <article class="result-card">
+                <p>Goal status</p>
+                <strong id="goalStatus">Enter a goal to begin planning.</strong>
+            </article>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
